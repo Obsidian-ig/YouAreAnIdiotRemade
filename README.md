@@ -1,6 +1,6 @@
 # You Are An Idiot Remade
 The remake of the You are an idiot prankware.
-This is NOT an exact remake. I have added my own features too it. It was made in c# using windows forms.
+This is NOT an exact remake. I have added my own features to it. It was made in c# using windows forms.
 
 # How to run
 In order to run this you need to have dotnet framework version 4.7.2 or higher,
