@@ -1,0 +1,11 @@
+C:\Users\villo\source\repos\YouAreAnIdiot\bin\Debug\YouAreAnIdiot.exe.config
+C:\Users\villo\source\repos\YouAreAnIdiot\bin\Debug\YouAreAnIdiot.exe
+C:\Users\villo\source\repos\YouAreAnIdiot\bin\Debug\YouAreAnIdiot.pdb
+C:\Users\villo\source\repos\YouAreAnIdiot\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAnIdiot.csproj.AssemblyReference.cache
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAnIdiot.Properties.Resources.resources
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAnIdiot.csproj.GenerateResource.cache
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAnIdiot.csproj.CoreCompileInputs.cache
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAn.5729F529.Up2Date
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAnIdiot.exe
+C:\Users\villo\source\repos\YouAreAnIdiot\obj\Debug\YouAreAnIdiot.pdb
