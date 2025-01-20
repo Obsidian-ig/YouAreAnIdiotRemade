@@ -14,3 +14,6 @@ Open up regedit, then go to: Computer\HKEY_CURRENT_USER\Software\Microsoft\Windo
 # How do I stop it from opening on startup?
 Press WIN + R and type: "%appdata%" and press ok/enter,
 Go to Microsoft->Windows->Start Menu->Programs->Startup and delete "YouAreAnIdiot"
+
+# Join my discord!
+https://discord.gg/eFtzaVM7c9
