@@ -23,5 +23,8 @@ Press WIN + R and type: "%appdata%" and press ok/enter,
 
 Go to Microsoft->Windows->Start Menu->Programs->Startup and delete "YouAreAnIdiot"
 
+# Full Removal Guide In This Video
+https://youtu.be/4mxWakwjVLU
+
 # Join my discord!
 https://discord.gg/eFtzaVM7c9
