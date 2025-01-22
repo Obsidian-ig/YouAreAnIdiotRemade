@@ -14,20 +14,20 @@ namespace YouAreAnIdiotWindowsForms
     {
         public static MainForm form = new MainForm();
         public Timer colorSwitchTimer;
-        public bool isBlack = true;
-        public static Timer updateTimer = new Timer
+        public bool isBlack = true; // was meant to check if the background color was black or white
+        public static Timer updateTimer = new Timer // basically my equivalent of unity's Update() function, "runs at 60fps" machine fps will still vary it I think
         {
-            Interval = 16
+            Interval = 16 // 16ms
         };
-        public static List<Form> forms = new List<Form>();
-        public static List<FormMovement> movementStates = new List<FormMovement>();
-        public static List<bool> useNegativeHeights = new List<bool>();
-        public static List<bool> useNegativeWidths = new List<bool>();
+        public static List<Form> forms = new List<Form>(); //A list of all the active "idiot tabs"
+        public static List<FormMovement> movementStates = new List<FormMovement>(); //A list of all the movement states of each idiot tab
+        public static List<bool> useNegativeHeights = new List<bool>(); //To check which direction to use for the y position.
+        public static List<bool> useNegativeWidths = new List<bool>(); //To check which direction to use for the x position
         public static Random rand = new Random();
 
-        private WindowsMediaPlayer player;
+        private WindowsMediaPlayer player; //To play the audio
 
-        // Define a class to track form properties and movement states
+        // Never actually used the movement states lol
         public class FormMovement
         {
             public bool BouncedRight { get; set; }
@@ -42,7 +42,7 @@ namespace YouAreAnIdiotWindowsForms
                 BouncedLeft = false;
                 BouncedTop = false;
                 BouncedBottom = false;
-                Velocity = new Point(16, 16); // Start moving right and down
+                Velocity = new Point(16, 16); // Only used the velocity, basically gets added to the forms location every "frame" Runs at 60fps 
             }
         }
 
@@ -62,24 +62,23 @@ namespace YouAreAnIdiotWindowsForms
                 Dock = DockStyle.Fill
             };
 
-            // Add PictureBox to Form
             this.Controls.Add(pictureBox);
 
             // Create Button that covers the entire form
             Button button = new Button
             {
-                Size = new Size(392, 320),  // Same size as the form
-                Location = new Point(0, 0), // Position it at the top-left corner
+                Size = new Size(392, 320),
+                Location = new Point(0, 0),
                 Text = "Hello",
-                BackColor = Color.Transparent,  // Make it transparent
-                FlatStyle = FlatStyle.Flat,     // Remove the border
-                ForeColor = Color.Transparent, // Make the text transparent
+                BackColor = Color.Transparent, 
+                FlatStyle = FlatStyle.Flat,     
+                ForeColor = Color.Transparent, 
             };
 
-            // Add Button to form
+            
             this.Controls.Add(button);
 
-            // Set Form properties
+            // Set props
             this.Text = "You are an idiot!!";
             this.ClientSize = new Size(392, 320);
             this.Width = 392;
@@ -87,10 +86,10 @@ namespace YouAreAnIdiotWindowsForms
             this.Icon = new Icon("idiot icon.ico");
             this.BackColor = Color.Black;
 
-            // Create and start timer for color switching
+            // was used before I set the gif to fully fill the idiot tab, didn't work very well lol
             colorSwitchTimer = new Timer
             {
-                Interval = 620 // 0.5 seconds
+                Interval = 620 // 0.smth seconds
             };
             colorSwitchTimer.Tick += ColorSwitchTimer_Tick;
             colorSwitchTimer.Start();
@@ -98,49 +97,50 @@ namespace YouAreAnIdiotWindowsForms
 
         }
 
+        // handles anything that needs to be run once per frame, pretty much just the movement handling for each idiot tab
         private static void update_Tick(object sender, EventArgs e)
         {
             int index = 0;
             foreach (Form f in forms)
             {
-                // Track form's movement state
-
-
                 // Get screen's bounds manually
                 int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
                 int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
                 int screenX = Screen.PrimaryScreen.WorkingArea.X;
                 int screenY = Screen.PrimaryScreen.WorkingArea.Y;
 
-                if (f.Location.Y + f.Height >= screenHeight - f.Height) useNegativeHeights[index] = true;
-                if (f.Location.Y + f.Height <= screenHeight - f.Height) useNegativeHeights[index] = false;
-                int fHeight = f.Location.Y;
+                if (f.Location.Y + f.Height >= screenHeight - f.Height) useNegativeHeights[index] = true; // check if the idiot tab is lower than the middle of the screen
+                if (f.Location.Y + f.Height <= screenHeight - f.Height) useNegativeHeights[index] = false; // check if the idiot tab is higher than the middle of the screen
+                int fHeight = f.Location.Y; // basically the y position offset the form is meant to be using when calculating its y pos 
                 if (useNegativeHeights[index]) fHeight = f.Location.Y + f.Height;
                 if (!useNegativeHeights[index]) fHeight = f.Location.Y;
 
 
                 if (f.Location.X + f.Width >= screenWidth - f.Width) useNegativeWidths[index] = true;
                 if (f.Location.X + f.Width <= screenWidth - f.Width) useNegativeWidths[index] = false;
-                int fWidth = f.Location.X;
+                int fWidth = f.Location.X; // same thing as the fHeight but for width and x pos
                 if (useNegativeWidths[index]) fWidth = f.Location.X + f.Width;
                 if (!useNegativeWidths[index]) fWidth = f.Location.X;
 
-
+                // check if the idiot tab is bouncing off the right side of the screen
                 if (fWidth >= screenWidth)
                 {
                     movementStates[index].Velocity = new Point(-movementStates[index].Velocity.X, movementStates[index].Velocity.Y);
                 }
 
+                // check if the idiot tab is bouncing off the left side of the screen
                 if (fWidth <= screenX)
                 {
                     movementStates[index].Velocity = new Point(-movementStates[index].Velocity.X, movementStates[index].Velocity.Y);
                 }
 
+                // check if the idiot tab is bouncing off the bottom of the screen? maybe top need to test
                 if (fHeight >= screenHeight)
                 {
                     movementStates[index].Velocity = new Point(movementStates[index].Velocity.X, -movementStates[index].Velocity.Y);
                 }
 
+                // check if the idiot tab is bouncing off the top of the screen? maybe bottom need to test
                 if (fHeight <= screenY)
                 {
                     movementStates[index].Velocity = new Point(movementStates[index].Velocity.X, -movementStates[index].Velocity.Y);
@@ -148,11 +148,12 @@ namespace YouAreAnIdiotWindowsForms
 
                 // Update the form location with new velocity
                 f.Location = new Point(f.Location.X + movementStates[index].Velocity.X, f.Location.Y + movementStates[index].Velocity.Y);
-                //f.Text = $"({fWidth}, {fHeight}), vX: {movementStates[index].Velocity.X}, vY: {movementStates[index].Velocity.Y}, -h: {screenHeight - f.Height}, +h: {screenHeight + f.Height}, -w: {screenWidth - f.Width}, +w: {screenWidth + f.Width}, nH: {useNegativeHeights[index]}, nW: {useNegativeWidths[index]}";
+                // just sum debugging //f.Text = $"({fWidth}, {fHeight}), vX: {movementStates[index].Velocity.X}, vY: {movementStates[index].Velocity.Y}, -h: {screenHeight - f.Height}, +h: {screenHeight + f.Height}, -w: {screenWidth - f.Width}, +w: {screenWidth + f.Width}, nH: {useNegativeHeights[index]}, nW: {useNegativeWidths[index]}";
                 index++;
             }
         }
 
+        // thx chatgpt, basically just creates a key in the registry that disables task manager
         static void DisableTaskManager()
         {
             try
@@ -184,6 +185,7 @@ namespace YouAreAnIdiotWindowsForms
             }
         }
 
+        // thanks chatgpt, I was too lazy to code this lol, just copies the files to the local app data folder
         static void CopyFiles()
         {
             try
@@ -224,6 +226,7 @@ namespace YouAreAnIdiotWindowsForms
             }
         }
 
+        // thx chatgpt, didnt know how to do this so I just had it do it for me, pretty self explanitory
         static void CreateShortcut(string shortcutPath, string targetPath, string workingDirectory, string description)
         {
             Type type = Type.GetTypeFromProgID("WScript.Shell");
@@ -239,15 +242,15 @@ namespace YouAreAnIdiotWindowsForms
             Marshal.FinalReleaseComObject(shell);
         }
 
+        // again self explanitory
         public static void RestartSystem()
         {
-            // Command to restart the system
             string restartCommand = "shutdown.exe /r /f /t 0";
 
-            // Create a new process to run the command
             Process.Start("cmd.exe", "/C " + restartCommand);
         }
 
+        // for the old timer
         private void ColorSwitchTimer_Tick(object sender, EventArgs e)
         {
             // Switch background color
@@ -287,7 +290,7 @@ namespace YouAreAnIdiotWindowsForms
             string shortcutPath = Path.Combine(startupFolderPath, "YouAreAnIdiot.lnk");
             string targetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "YouAreAnIdiot.exe");
             CreateShortcut(shortcutPath, targetPath, Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "YouAreAnIdiot Application");
-            if (!File.Exists("restarted") && !Environment.CurrentDirectory.Equals(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)))
+            if (!File.Exists("restarted") && !Environment.CurrentDirectory.Equals(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))) // check to see if the program has already been ran once
             {
                 File.Create("restarted");
                 DisableTaskManager();
@@ -315,7 +318,7 @@ namespace YouAreAnIdiotWindowsForms
 
         private static void IdiotClicked(object sender, EventArgs e)
         {
-            // Show a new form when clicked
+            // Show a new form when clicked/doesnt work for some reason
             ShowIdiot();
         }
 
