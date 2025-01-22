@@ -6,7 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using WMPLib;
+using System.Media;
+using NAudio.Wave;
 
 namespace YouAreAnIdiotWindowsForms
 {
@@ -24,8 +25,6 @@ namespace YouAreAnIdiotWindowsForms
         public static List<bool> useNegativeHeights = new List<bool>(); //To check which direction to use for the y position.
         public static List<bool> useNegativeWidths = new List<bool>(); //To check which direction to use for the x position
         public static Random rand = new Random();
-
-        private WindowsMediaPlayer player; //To play the audio
 
         // Never actually used the movement states lol
         public class FormMovement
@@ -48,10 +47,17 @@ namespace YouAreAnIdiotWindowsForms
 
         public MainForm()
         {
-            player = new WindowsMediaPlayer();
-            player.URL = "You are an idiot!!.mp3";
-            player.settings.setMode("loop", true); // Ensure it loops
-            player.controls.play();
+            var audioFileReader = new AudioFileReader("You are an idiot!!.wav");
+            var waveOutEvent = new WaveOutEvent();
+            waveOutEvent.Init(audioFileReader);
+            waveOutEvent.Play();
+
+            // Dispose resources when playback finishes and restart playback
+            waveOutEvent.PlaybackStopped += (s, e) =>
+            {
+                audioFileReader.Position = 0; // Reset to the beginning of the file
+                waveOutEvent.Play(); // Replay the audio
+            };
 
             // Create PictureBox
             PictureBox pictureBox = new PictureBox
@@ -70,12 +76,12 @@ namespace YouAreAnIdiotWindowsForms
                 Size = new Size(392, 320),
                 Location = new Point(0, 0),
                 Text = "Hello",
-                BackColor = Color.Transparent, 
-                FlatStyle = FlatStyle.Flat,     
-                ForeColor = Color.Transparent, 
+                BackColor = Color.Transparent,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.Transparent,
             };
 
-            
+
             this.Controls.Add(button);
 
             // Set props
@@ -306,7 +312,7 @@ namespace YouAreAnIdiotWindowsForms
 
             // Set the form's location
             form.Location = new Point(randomX, randomY);
-            
+
         }
 
         private static void IdiotClosing(object sender, FormClosingEventArgs e)
